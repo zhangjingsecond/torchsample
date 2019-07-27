@@ -31,7 +31,7 @@ class RegularizerContainer(object):
 
     def get_value(self):
         value = sum([r.value for r in self.regularizers])
-        self.current_value = value.data[0]
+        self.current_value = value.data
         return value
 
     def __len__(self):
