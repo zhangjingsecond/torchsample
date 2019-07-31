@@ -652,11 +652,11 @@ class SingleInput_SingleTarget_Helper(object):
         return inputs, targets
     def grab_batch(self, batch_idx, batch_size, inputs, targets, requires_grad=False):
         input_batch = Variable(inputs[batch_idx*batch_size:(batch_idx+1)*batch_size], requires_grad=requires_grad)
-        target_batch = Variable(targets[batch_idx*batch_size:(batch_idx+1)*batch_size], requires_grad=requires_grad, requires_grad=False)
+        target_batch = Variable(targets[batch_idx*batch_size:(batch_idx+1)*batch_size], requires_grad=False)
         return input_batch, target_batch
     def grab_batch_from_loader(self, loader_iter, requires_grad=False):
         input_batch, target_batch = next(loader_iter)
-        return Variable(input_batch, requires_grad=requires_grad), Variable(target_batch, requires_grad=requires_grad, requires_grad=False)
+        return Variable(input_batch, requires_grad=requires_grad), Variable(target_batch,  requires_grad=False)
     def apply_transforms(self, tforms, input_batch, target_batch):
         input_batch = tforms[0](input_batch)
         target_batch = tforms[1](target_batch)
@@ -687,12 +687,12 @@ class SingleInput_MultiTarget_Helper(object):
         return inputs, targets
     def grab_batch(self, batch_idx, batch_size, inputs, targets, requires_grad=False):
         input_batch = Variable(inputs[batch_idx*batch_size:(batch_idx+1)*batch_size], requires_grad=requires_grad)
-        target_batch = [Variable(target_[batch_idx*batch_size:(batch_idx+1)*batch_size], requires_grad=requires_grad, requires_grad=False)
+        target_batch = [Variable(target_[batch_idx*batch_size:(batch_idx+1)*batch_size],  requires_grad=False)
                         for target_ in targets]
         return input_batch, target_batch
     def grab_batch_from_loader(self, loader_iter, requires_grad=False):
         input_batch, target_batch = next(loader_iter)
-        return Variable(input_batch, requires_grad=requires_grad), [Variable(target_, requires_grad=requires_grad, requires_grad=False) for target_ in target_batch]
+        return Variable(input_batch, requires_grad=requires_grad), [Variable(target_,  requires_grad=False) for target_ in target_batch]
     def apply_transforms(self, tforms, input_batch, target_batch):
         input_batch = tforms[0](input_batch)
         target_batch = [tforms[1](target_) for target_ in target_batch]
@@ -720,11 +720,11 @@ class MultiInput_SingleTarget_Helper(object):
     def grab_batch(self, batch_idx, batch_size, inputs, targets, requires_grad=False):
         input_batch = [Variable(input_[batch_idx*batch_size:(batch_idx+1)*batch_size], requires_grad=requires_grad)
                        for input_ in inputs]
-        target_batch = Variable(targets[batch_idx*batch_size:(batch_idx+1)*batch_size], requires_grad=requires_grad, requires_grad=False)
+        target_batch = Variable(targets[batch_idx*batch_size:(batch_idx+1)*batch_size],  requires_grad=False)
         return input_batch, target_batch
     def grab_batch_from_loader(self, loader_iter, requires_grad=False):
         input_batch, target_batch = next(loader_iter)
-        return [Variable(input_, requires_grad=requires_grad) for input_ in input_batch], Variable(target_batch, requires_grad=requires_grad, requires_grad=False)
+        return [Variable(input_, requires_grad=requires_grad) for input_ in input_batch], Variable(target_batch, requires_grad=False)
     def apply_transforms(self, tforms, input_batch, target_batch):
         input_batch = [tforms[0](input_) for input_ in input_batch]
         target_batch = tforms[1](target_batch)
@@ -751,12 +751,12 @@ class MultiInput_MultiTarget_Helper(object):
     def grab_batch(self, batch_idx, batch_size, inputs, targets, requires_grad=False):
         input_batch = [Variable(input_[batch_idx*batch_size:(batch_idx+1)*batch_size], requires_grad=requires_grad)
                        for input_ in inputs]
-        target_batch = [Variable(target_[batch_idx*batch_size:(batch_idx+1)*batch_size], requires_grad=requires_grad, requires_grad=False)
+        target_batch = [Variable(target_[batch_idx*batch_size:(batch_idx+1)*batch_size], requires_grad=False)
                        for target_ in targets]
         return input_batch, target_batch
     def grab_batch_from_loader(self, loader_iter, requires_grad=False):
         input_batch, target_batch = next(loader_iter)
-        return [Variable(input_, requires_grad=requires_grad) for input_ in input_batch], [Variable(target_, requires_grad=requires_grad, requires_grad=False) for target_ in target_batch]
+        return [Variable(input_, requires_grad=requires_grad) for input_ in input_batch], [Variable(target_,  requires_grad=False) for target_ in target_batch]
     def apply_transforms(self, tforms, input_batch, target_batch):
         input_batch = [tforms[0](input_) for input_ in input_batch]
         target_batch = [tforms[1](target_) for target_ in target_batch]
